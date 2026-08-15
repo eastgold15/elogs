@@ -16,7 +16,7 @@
     "url": "git+https://github.com/eastgold15/elogs.git"
   },
   "license": "MIT",
-  "author": "Noppakorn Kaewsalabnil <hello@pungrumpy.com>",
+  "author": "eastgold15 <1960825664@qq.com>",
   "sideEffects": false,
   "type": "module",
   "exports": {
