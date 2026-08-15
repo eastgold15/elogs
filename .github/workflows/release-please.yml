@@ -32,7 +32,7 @@ jobs:
       # release-please action 内部会跑 `npm publish`。
       # 它读 NPM_TOKEN env 来认证 npm registry。
       - name: Release please
-        uses: googleapis/release-please-action@5d0db02b7d3cc0a9985a2059f2bfd2cc5e0e8d2b # v4
+        uses: googleapis/release-please-action@v4 # v4
         id: release
         env:
           NPM_TOKEN: ${{ secrets.NPMTOKEN }}
