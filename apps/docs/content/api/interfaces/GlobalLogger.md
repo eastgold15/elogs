@@ -1,8 +1,8 @@
-[**@pori15/elogs**](../README.md)
+[**@eastgold15/elogs**](../README.md)
 
 ***
 
-[@pori15/elogs](../README.md) / GlobalLogger
+[@eastgold15/elogs](../README.md) / GlobalLogger
 
 # Interface: GlobalLogger
 
@@ -20,7 +20,7 @@ Defined in: [packages/elogs/src/interfaces.ts:603](https://github.com/eastgold15
 ## Example
 
 ```typescript
-import { globalLogger } from "@pori15/elogs";
+import { globalLogger } from "@eastgold15/elogs";
 
 // 路由 handler / 中间件 / hook —— 自动走完整 emit
 app.get("/user/:id", ({ params }) => {

@@ -9,7 +9,7 @@ Elogs 启动时会在控制台打印一行横幅,告诉你服务跑在哪个端�
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 new Elysia().use(createElogs()).listen(3000)
 ```
@@ -36,7 +36,7 @@ new Elysia().use(createElogs()).listen(3000)
 | `format` | `"simple" \| "banner"` | `"banner"` | `"banner"` = ASCII 框,`"simple"` = 单行文本 |
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   startup: {
@@ -70,7 +70,7 @@ simple 模式输出:
 显式 `startup` 字段会覆盖 preset 的值。
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   preset: 'prod',         // prod 默认 show: false
@@ -83,7 +83,7 @@ createElogs({
 `renderBanner(message)` 公开导出,返回 ASCII 框字符串(不打印)。要自己写 CLI 工具、嵌进别的输出流时直接调:
 
 ```ts
-import { renderBanner } from '@pori15/elogs'
+import { renderBanner } from '@eastgold15/elogs'
 
 console.log(renderBanner('🛰  My service is up at http://localhost:3000'))
 // ┌──────────────────────────────────────────────────┐
@@ -104,7 +104,7 @@ console.log(renderBanner('🛰  My service is up at http://localhost:3000'))
 > 一般情况下你**不需要**直接调 `startServer`,`createElogs()` 内部已经接好。只有在自己写非 Elysia 启动流程(比如 `Bun.serve()` 配 Elysia handler)时才用。
 
 ```ts
-import { startServer } from '@pori15/elogs'
+import { startServer } from '@eastgold15/elogs'
 
 Bun.serve({
   port: 3000,

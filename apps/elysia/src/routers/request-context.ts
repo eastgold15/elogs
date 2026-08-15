@@ -1,5 +1,5 @@
-import type { CreateElogs } from "@pori15/elogs";
-import { globalLogger, useLogger } from "@pori15/elogs";
+import type { CreateElogs } from "@eastgold15/elogs";
+import { globalLogger, useLogger } from "@eastgold15/elogs";
 
 const dbQueryHelper = async () => {
   const log = useLogger();

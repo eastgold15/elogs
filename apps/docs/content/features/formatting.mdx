@@ -8,7 +8,7 @@ description: 自定义日志消息格式、token 集合、颜色和时间戳
 ## 基本用法
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -145,7 +145,7 @@ IP 从 `x-forwarded-for` 第一段或 `x-real-ip` 取;本地测试无这些 head
 ## 时间戳
 
 ```ts
-import type { ElogsConfig } from '@pori15/elogs'
+import type { ElogsConfig } from '@eastgold15/elogs'
 
 const config: ElogsConfig = {
   customLogFormat: '{now} {level} {method} {pathname}',

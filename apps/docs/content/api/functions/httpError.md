@@ -1,8 +1,8 @@
-[**@pori15/elogs**](../README.md)
+[**@eastgold15/elogs**](../README.md)
 
 ***
 
-[@pori15/elogs](../README.md) / httpError
+[@eastgold15/elogs](../README.md) / httpError
 
 # Function: httpError()
 

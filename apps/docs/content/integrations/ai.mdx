@@ -3,7 +3,7 @@ title: AI SDK metrics
 description: 把 LLM 用量指标挂到请求日志
 ---
 
-Elogs 提供子路径 `@pori15/elogs/ai`,用 `mergeAIMetrics` 把 LLM/AI SDK 的用量指标合并到请求 context。`ai` 字段会出现在 access log 的 context 树里,任何日志后端都能按 `ai.model` / `ai.totalTokens` 聚合。
+Elogs 提供子路径 `@eastgold15/elogs/ai`,用 `mergeAIMetrics` 把 LLM/AI SDK 的用量指标合并到请求 context。`ai` 字段会出现在 access log 的 context 树里,任何日志后端都能按 `ai.model` / `ai.totalTokens` 聚合。
 
 无必需 peer 依赖 —— 任何返回 `usage` 字段的 AI SDK(Anthropic、OpenAI、Vercel AI SDK 等)都能直接用。
 
@@ -11,8 +11,8 @@ Elogs 提供子路径 `@pori15/elogs/ai`,用 `mergeAIMetrics` 把 LLM/AI SDK 的
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
-import { mergeAIMetrics } from '@pori15/elogs/ai'
+import { createElogs } from '@eastgold15/elogs'
+import { mergeAIMetrics } from '@eastgold15/elogs/ai'
 
 const app = new Elysia()
   .use(createElogs())
@@ -75,8 +75,8 @@ interface AIMetrics {
 ```ts
 import { Anthropic } from '@anthropic-ai/sdk'
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
-import { mergeAIMetrics } from '@pori15/elogs/ai'
+import { createElogs } from '@eastgold15/elogs'
+import { mergeAIMetrics } from '@eastgold15/elogs/ai'
 
 const anthropic = new Anthropic()
 
@@ -110,7 +110,7 @@ const app = new Elysia()
 Vercel AI SDK 或 Anthropic streaming 场景下,可以同时记首块延迟和总耗时:
 
 ```ts
-import { mergeAIMetrics } from '@pori15/elogs/ai'
+import { mergeAIMetrics } from '@eastgold15/elogs/ai'
 
 const start = performance.now()
 let firstChunkMs: number | undefined
@@ -140,7 +140,7 @@ mergeAIMetrics(store.logger, request, {
 `mergeAIMetrics` 是合并语义,不会替换整个 `ai` 对象。多次 LLM 调用可以独立记,字段自动按 key 合并:
 
 ```ts
-import { mergeAIMetrics } from '@pori15/elogs/ai'
+import { mergeAIMetrics } from '@eastgold15/elogs/ai'
 
 // 第一次调用
 mergeAIMetrics(store.logger, request, {

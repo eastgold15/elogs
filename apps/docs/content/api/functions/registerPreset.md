@@ -1,8 +1,8 @@
-[**@pori15/elogs**](../README.md)
+[**@eastgold15/elogs**](../README.md)
 
 ***
 
-[@pori15/elogs](../README.md) / registerPreset
+[@eastgold15/elogs](../README.md) / registerPreset
 
 # Function: registerPreset()
 
@@ -29,7 +29,7 @@ Defined in: [packages/elogs/src/config/preset-registry.ts:43](https://github.com
 ## Example
 
 ```ts
-import { registerPreset } from "@pori15/elogs";
+import { registerPreset } from "@eastgold15/elogs";
 
 registerPreset("staging", {
   pino: { prettyPrint: true },

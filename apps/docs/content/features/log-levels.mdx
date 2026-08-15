@@ -8,7 +8,7 @@ description: 控制日志详细程度
 ## 可用级别
 
 ```ts
-import type { LogLevel } from '@pori15/elogs'
+import type { LogLevel } from '@eastgold15/elogs'
 ```
 
 `LogLevel` 是 4 个字面量:
@@ -27,7 +27,7 @@ import type { LogLevel } from '@pori15/elogs'
 ### 单个级别
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -51,7 +51,7 @@ createElogs({
 `logLevel` 是 options 根级字段,等价于 `config.logFilter.level`:
 
 ```ts
-import type { LogLevel } from '@pori15/elogs'
+import type { LogLevel } from '@eastgold15/elogs'
 
 createElogs({ logLevel: ['ERROR', 'WARNING'] satisfies LogLevel[] })
 ```
@@ -85,7 +85,7 @@ createElogs({
 
 派生出来的级别也会被 `logFilter.level`(或 `logLevel`)过滤 —— `level: ['ERROR']` 时 404 请求不会产生输出。
 
-> 想自己派生级别?`levelForStatus(status)` 是从 `@pori15/elogs` 导出的纯函数,在自定义 `Transport` 里可以直接用。
+> 想自己派生级别?`levelForStatus(status)` 是从 `@eastgold15/elogs` 导出的纯函数,在自定义 `Transport` 里可以直接用。
 
 ## Pino 的级别
 
@@ -125,4 +125,4 @@ Pino logger 通过 lazy proxy 实现,首次访问时按需构造。把 `config.p
 - [`LogFilter`](https://elogs.vercel.app/api/types#log-filter) — `{ level?: LogLevel[] }`
 - [`ElogsConfig.logFilter`](https://elogs.vercel.app/api/configuration#elogs-config) — 配置字段
 - [`CreateElogsOptions.logLevel`](https://elogs.vercel.app/api/configuration#create-elogs-options) — 根级别名
-- `levelForStatus(status)` — 公开工具函数,从 `@pori15/elogs` 直接 import
+- `levelForStatus(status)` — 公开工具函数,从 `@eastgold15/elogs` 直接 import

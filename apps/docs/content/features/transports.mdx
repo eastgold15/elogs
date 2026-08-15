@@ -28,7 +28,7 @@ Elogs 支持三种输出目标,**互不冲突**:
 [`Transport`](/api/types#transport) 是**只有一个方法**的纯接口,所有组合器、sink 出口都走它:
 
 ```ts
-import type { LogLevel, Transport } from '@pori15/elogs'
+import type { LogLevel, Transport } from '@eastgold15/elogs'
 
 export interface Transport {
   log: (
@@ -45,8 +45,8 @@ export interface Transport {
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
-import type { Transport } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
+import type { Transport } from '@eastgold15/elogs'
 
 const consoleTransport: Transport = {
   log: (level, message, meta) => {
@@ -70,7 +70,7 @@ const app = new Elysia().use(
 ### Elasticsearch
 
 ```ts
-import type { Transport } from '@pori15/elogs'
+import type { Transport } from '@eastgold15/elogs'
 
 const elasticsearchTransport: Transport = {
   log: async (level, message, meta) => {
@@ -91,7 +91,7 @@ const elasticsearchTransport: Transport = {
 ### MongoDB
 
 ```ts
-import type { Transport } from '@pori15/elogs'
+import type { Transport } from '@eastgold15/elogs'
 
 const mongodbTransport: Transport = {
   log: async (level, message, meta) => {
@@ -108,7 +108,7 @@ const mongodbTransport: Transport = {
 ### Slack(只告 ERROR)
 
 ```ts
-import type { Transport, LogLevel } from '@pori15/elogs'
+import type { Transport, LogLevel } from '@eastgold15/elogs'
 
 const slackTransport: Transport = {
   log: async (level: LogLevel, message, meta) => {
@@ -134,7 +134,7 @@ const slackTransport: Transport = {
 任何 HTTP 端点都能直接 `fetch` 包一个 transport。批量 / 节流需求用下面的 `batch` 组合器:
 
 ```ts
-import type { Transport } from '@pori15/elogs'
+import type { Transport } from '@eastgold15/elogs'
 
 const otelTransport: Transport = {
   log: async (level, message, meta) => {
@@ -206,7 +206,7 @@ createElogs({
 
 ## 组合器(Composers)
 
-`Transport` 接口只有一个 `log` 方法,所以 **(Transport) => Transport** 的纯函数可以任意堆叠,跟 pino multi-stream 一样。Elogs 给 5 个常用组合器,从 `@pori15/elogs` 直接 import:
+`Transport` 接口只有一个 `log` 方法,所以 **(Transport) => Transport** 的纯函数可以任意堆叠,跟 pino multi-stream 一样。Elogs 给 5 个常用组合器,从 `@eastgold15/elogs` 直接 import:
 
 | 组合器 | 用途 |
 | --- | --- |
@@ -223,8 +223,8 @@ createElogs({
 把一条 log 同时发到多个 transport。任一分支 throw 或 reject 都不会短路其它分支(`Promise.allSettled` 兜底)。
 
 ```ts
-import { createElogs, tee } from '@pori15/elogs'
-import type { Transport } from '@pori15/elogs'
+import { createElogs, tee } from '@eastgold15/elogs'
+import type { Transport } from '@eastgold15/elogs'
 
 const consoleT: Transport = { log: (l, m) => console.log(l, m) }
 const metricsT: Transport = { log: (l, m, meta) => metrics.increment(m) }
@@ -241,7 +241,7 @@ createElogs({
 以 `rate` (0-1) 的概率把 log 转发给 transport。`rate=0` 完全丢弃,`rate=1` 等于直通。`rate` 越界抛 `Error`。
 
 ```ts
-import { createElogs, tee, sample } from '@pori15/elogs'
+import { createElogs, tee, sample } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -260,8 +260,8 @@ createElogs({
 仅当 `predicate(level, message, meta)` 返回 truthy 时才转发。最常见:ERROR 才告警。
 
 ```ts
-import { createElogs, tee, filter, sample } from '@pori15/elogs'
-import type { Transport, LogLevel } from '@pori15/elogs'
+import { createElogs, tee, filter, sample } from '@eastgold15/elogs'
+import type { Transport, LogLevel } from '@eastgold15/elogs'
 
 const slackAlerter: Transport = {
   log: async (l: LogLevel, m) => {
@@ -290,7 +290,7 @@ createElogs({
 对每条 log 跑 `fn`,**然后总是**转发给 transport。适合打 metrics / 计数 / 调试 trace。`fn` 抛错会被静默吞(不影响主链路)。
 
 ```ts
-import { createElogs, tap, sample } from '@pori15/elogs'
+import { createElogs, tap, sample } from '@eastgold15/elogs'
 
 let counter = 0
 
@@ -318,8 +318,8 @@ createElogs({
 适合打远程服务(每次 HTTP 请求成本高):
 
 ```ts
-import { createElogs, batch, filter, tee } from '@pori15/elogs'
-import type { Transport, LogLevel } from '@pori15/elogs'
+import { createElogs, batch, filter, tee } from '@eastgold15/elogs'
+import type { Transport, LogLevel } from '@eastgold15/elogs'
 
 const httpSink: Transport = {
   log: async (lvl: LogLevel, msg, meta) => {

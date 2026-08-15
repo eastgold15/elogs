@@ -584,7 +584,7 @@ export interface RequestScopedLogger {
  *
  * @example
  * ```typescript
- * import { globalLogger } from "@pori15/elogs";
+ * import { globalLogger } from "@eastgold15/elogs";
  *
  * // 路由 handler / 中间件 / hook —— 自动走完整 emit
  * app.get("/user/:id", ({ params }) => {

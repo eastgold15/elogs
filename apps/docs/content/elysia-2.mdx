@@ -9,8 +9,8 @@ description: Elogs 在 Elysia 2 open beta 上的适配说明,以及升级时的�
 
 | Elysia              | Elogs    | npm tag  | 安装                                                  |
 | ------------------- | -------- | -------- | ----------------------------------------------------- |
-| `1.4.x`             | `6.x`    | `latest` | `bun add @pori15/elogs`                               |
-| `>= 2.0.0-beta.2`   | `7.x-next` | `next`   | `bun add @pori15/elogs@next elysia@next`              |
+| `1.4.x`             | `6.x`    | `latest` | `bun add @eastgold15/elogs`                               |
+| `>= 2.0.0-beta.2`   | `7.x-next` | `next`   | `bun add @eastgold15/elogs@next elysia@next`              |
 
 `next` 分支紧跟 Elysia 2 beta,在 Elysia 2 稳定前还可能继续引入破坏性变更。
 
@@ -38,7 +38,7 @@ WebSocket 路由需要 opt-in provider,`createWsHandlerWrapper` 才能包到东�
 ```ts
 import { Elysia } from 'elysia'
 import { websocket } from 'elysia/websocket'
-import { createElogs, createWsHandlerWrapper } from '@pori15/elogs'
+import { createElogs, createWsHandlerWrapper } from '@eastgold15/elogs'
 
 const logging = createElogs()
 const wrapWs = createWsHandlerWrapper()
@@ -106,8 +106,8 @@ const logOnErrorHook: ErrorHandler = (ctx) => {
 
 ```ts
 import { Elysia, problem } from 'elysia'
-import { createElogs, httpError, errorMap } from '@pori15/elogs'
-import { translateDrizzleError } from '@pori15/elogs/translator'
+import { createElogs, httpError, errorMap } from '@eastgold15/elogs'
+import { translateDrizzleError } from '@eastgold15/elogs/translator'
 
 class NotFoundError extends Error {
   status = 404

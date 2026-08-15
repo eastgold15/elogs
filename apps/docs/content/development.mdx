@@ -84,7 +84,7 @@ git commit -m "refactor(utils): 抽取 pad2 helper(无 API 变化)"
 
 ## 2. 升级 Elysia 主版本(强约定)
 
-**`@pori15/elogs` 的 major 必须 = `elysia` 的 major。** 这样用户看一眼版本号就知道依赖兼容性。
+**`@eastgold15/elogs` 的 major 必须 = `elysia` 的 major。** 这样用户看一眼版本号就知道依赖兼容性。
 
 ### 2.1 操作流程
 
@@ -187,7 +187,7 @@ docs: 更新 usage 例子
 
 1. **commit message 格式**:`git log --oneline -10` 看最近的 commit 是不是符合规范
 2. **workflow 权限**:`.github/workflows/release-please.yml` 里的 `permissions` 块要包含 `contents: write` + `pull-requests: write`
-3. **配置文件**:`.github/release-please-config.json` 的 `package` 字段要等于 `packages/elogs/package.json#name`(`@pori15/elogs`)
+3. **配置文件**:`.github/release-please-config.json` 的 `package` 字段要等于 `packages/elogs/package.json#name`(`@eastgold15/elogs`)
 4. **manifest 锁定**:`.github/.release-please-manifest.json` 里的 `.: "2.0.0"` 是起点
 5. **GitHub Actions 日志**:`gh run list --workflow=release-please.yml` 看最近一次跑的情况
 
@@ -209,5 +209,5 @@ release-please 看最高优先级的:`feat!` > `feat` > `fix` > `perf`。一个 
 
 - [Conventional Commits 规范](https://www.conventionalcommits.org/)
 - [release-please 文档](https://github.com/googleapis/release-please)
-- [`@pori15/elogs` CHANGELOG](https://github.com/eastgold15/elogs/blob/main/packages/elogs/CHANGELOG.md)
+- [`@eastgold15/elogs` CHANGELOG](https://github.com/eastgold15/elogs/blob/main/packages/elogs/CHANGELOG.md)
 - [`.github/RELEASE.md`](https://github.com/eastgold15/elogs/blob/main/.github/RELEASE.md) — 仓库内的发版规范简版

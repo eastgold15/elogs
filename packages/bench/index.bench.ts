@@ -4,7 +4,7 @@ import {
   globalLogger,
   initGlobalLogger,
   requestStorage,
-} from "@pori15/elogs";
+} from "@eastgold15/elogs";
 import { consola } from "consola";
 import { Elysia } from "elysia";
 import { createLogger as createEvlog } from "evlog";

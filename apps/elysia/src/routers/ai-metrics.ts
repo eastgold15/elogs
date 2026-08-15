@@ -1,5 +1,5 @@
-import { CreateElogs, globalLogger } from "@pori15/elogs";
-import { mergeAIMetrics } from "@pori15/elogs/ai";
+import { CreateElogs, globalLogger } from "@eastgold15/elogs";
+import { mergeAIMetrics } from "@eastgold15/elogs/ai";
 
 export const aiMetricsRouter = <App extends CreateElogs>(app: App) =>
   app.post(

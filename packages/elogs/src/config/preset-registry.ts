@@ -27,7 +27,7 @@ const registry = new Map<string, PresetConfig>();
  *
  * @example
  * ```ts
- * import { registerPreset } from "@pori15/elogs";
+ * import { registerPreset } from "@eastgold15/elogs";
  *
  * registerPreset("staging", {
  *   pino: { prettyPrint: true },

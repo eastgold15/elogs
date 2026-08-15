@@ -9,7 +9,7 @@
  *
  * @example
  * // 在任意文件中使用
- * import { globalLogger, pino } from '@pori15/elogs';
+ * import { globalLogger, pino } from '@eastgold15/elogs';
  *
  * // 请求作用域内(路由 handler / 中间件 / hook)
  * globalLogger.info('User logged in');
@@ -144,7 +144,7 @@ const wrap = (logger: Logger): GlobalLogger => {
  *
  * @example
  * ```ts
- * import { pino } from "@pori15/elogs";
+ * import { pino } from "@eastgold15/elogs";
  * pino.info("module loaded");
  * ```
  *
@@ -161,7 +161,7 @@ export let pino: Pino = (() => {
   }
 })();
 
-/** 全局 Logger 实例,通过 `import { globalLogger } from "@pori15/elogs"` 拿到。
+/** 全局 Logger 实例,通过 `import { globalLogger } from "@eastgold15/elogs"` 拿到。
  *
  * @public
  */

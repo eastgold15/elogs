@@ -15,7 +15,7 @@ import {
   createElogs,
   createWsHandlerWrapper,
   createRequestContextStore,
-} from '@pori15/elogs'
+} from '@eastgold15/elogs'
 
 const plugin = createElogs({
   config: {
@@ -45,7 +45,7 @@ import {
   createElogs,
   createWsHandlerWrapper,
   createRequestContextStore,
-} from '@pori15/elogs'
+} from '@eastgold15/elogs'
 
 const contextStore = createRequestContextStore()
 
@@ -97,7 +97,7 @@ const app = new Elysia()
 整段业务不想打 WS 生命周期日志:
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
