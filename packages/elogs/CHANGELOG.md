@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/eastgold15/elogs/compare/elogs-v1.0.0...elogs-v2.0.0) (2026-08-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **elogs:** 包名从 @pori15/elogs 改为 @eastgold15/elogs。 所有 import、文档、配置(release-please config、README、docs site) 均已更新。author 同步改为 eastgold15 <1960825664@qq.com>。
+
+### Features
+
+* **elogs:** rename package from @pori15/elogs to @eastgold15/elogs ([#2](https://github.com/eastgold15/elogs/issues/2)) ([0e2b532](https://github.com/eastgold15/elogs/commit/0e2b532c5e283a83cfba65fe14b64ee2656d342e))
+
 ## 7.1.0
 
 ### Minor Changes
