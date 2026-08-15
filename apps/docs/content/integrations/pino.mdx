@@ -20,7 +20,7 @@ Elogs 集成了 [Pino](https://github.com/pinojs/pino) 作为底层日志引擎,
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia().use(createElogs())
 
@@ -52,7 +52,7 @@ app.get('/users/:id', async ({ log, params, store }) => {
 
 ```ts
 // logger.ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 export const elogsIns = createElogs({
   config: {
@@ -129,7 +129,7 @@ interface PinoConfig {
 ### 日志级别
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -143,7 +143,7 @@ createElogs({
 ### 美化输出
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -157,7 +157,7 @@ createElogs({
 或者自定义:
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -183,7 +183,7 @@ bun add pino-pretty
 Pino 自己的 `redact` 跟 Elogs 的 `autoRedact` 独立,可以同时跑:
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -211,7 +211,7 @@ createElogs({
 ### base 字段
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -231,7 +231,7 @@ createElogs({
 Pino 有自己的 transport 体系,处理高级日志目标。用 `transport` 选项配置:
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -251,7 +251,7 @@ createElogs({
 - **Elogs transport**(`config.transports`)—— 影响 HTTP access log 管道
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const customTransport = {
   log(level, message, meta) {
@@ -333,7 +333,7 @@ app.get('/api/risky', ({ store }) => {
 ## 按环境配置
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -355,7 +355,7 @@ createElogs({
 `dev` preset 已经预设了 `pino: { prettyPrint: true }`,开发环境通常直接用:
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({ preset: 'dev' })
 ```

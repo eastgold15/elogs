@@ -11,7 +11,7 @@ description: Real-world examples and use cases for Elogs
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(createElogs())
@@ -23,7 +23,7 @@ const app = new Elysia()
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(
@@ -47,7 +47,7 @@ const app = new Elysia()
 不调用任何 `logger.info`，只要在 handler 里 `mergeContext`，字段会自动出现在最终的 access log 的 `context` 节点下：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
 
 export const requestContextRouter = <App extends CreateElogs>(app: App) =>
   app.get('/checkout', ({ request, store }) => {
@@ -62,8 +62,8 @@ export const requestContextRouter = <App extends CreateElogs>(app: App) =>
 开启 `useAsyncLocalStorage: true` 后，service / helper 不用逐层传 `request`，直接 `useLogger()` 拿同一份 logger：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
-import { createElogs, useLogger } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
+import { createElogs, useLogger } from '@eastgold15/elogs'
 
 const dbQueryHelper = async () => {
   const log = useLogger()
@@ -88,7 +88,7 @@ export const requestContextRouter = <App extends CreateElogs>(app: App) =>
 handler context 上 derive 出来的 `log` 已经绑定了当前请求，省掉一个参数：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
 
 export const requestContextRouter = <App extends CreateElogs>(app: App) =>
   app.get('/profile', ({ log }) => {
@@ -105,7 +105,7 @@ export const requestContextRouter = <App extends CreateElogs>(app: App) =>
 两种姿势：直接走 `store.logger.info`（Elogs 路径）或者走 `store.pino.info`（原始 Pino）：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
 
 export const customRouter = <App extends CreateElogs>(app: App) =>
   app.get('/users/:id', ({ request, store, params }) => {
@@ -130,7 +130,7 @@ export const customRouter = <App extends CreateElogs>(app: App) =>
 用 `pino.child(...)` 创建带绑定字段的子 logger：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
 
 export const pinoRouter = <App extends CreateElogs>(app: App) =>
   app.get('/api/orders/:id', ({ store, params }) => {
@@ -149,7 +149,7 @@ export const pinoRouter = <App extends CreateElogs>(app: App) =>
 ### 性能埋点
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
 
 export const pinoRouter = <App extends CreateElogs>(app: App) =>
   app.post('/api/process', async ({ store, body }) => {
@@ -178,7 +178,7 @@ export const pinoRouter = <App extends CreateElogs>(app: App) =>
 Elogs 在单点 `onError` 钩子里记录所有进入错误管道的 error，**不** return value——错误继续按原路径传播：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
 
 export const boomRouter = <App extends CreateElogs>(app: App) =>
   app.get('/boom', () => {
@@ -226,7 +226,7 @@ export const errorRouter = <App extends CreateElogs>(app: App) =>
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(
@@ -254,8 +254,8 @@ const app = new Elysia()
 `autoTranslate: { db: 'drizzle' }` 让 Drizzle driver 错误（唯一约束 / 外键违反 / 连接失败）按映射规则决定日志级别。响应格式完全交给用户的 `.error("DrizzleError", ...)`：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
-import { createElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 import { problem } from 'elysia'
 
 // 模拟 Drizzle 抛的错误（真实代码里是 drizzle 自己的 DrizzleError）
@@ -309,7 +309,7 @@ const app = new Elysia()
 也可以不依赖 `autoTranslate`，在 `try/catch` 里手动调 `translateDrizzleError`：
 
 ```ts
-import { translateDrizzleError } from '@pori15/elogs/translator'
+import { translateDrizzleError } from '@eastgold15/elogs/translator'
 
 app.post('/users', async ({ store, body }) => {
   try {
@@ -411,7 +411,7 @@ const mongodbTransport = {
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const elasticsearchTransport = { /* ... */ }
 const slackTransport = { /* ... */ }
@@ -461,7 +461,7 @@ const app = new Elysia()
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = process.env.NODE_ENV === 'production'
@@ -502,7 +502,7 @@ const app = new Elysia()
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(

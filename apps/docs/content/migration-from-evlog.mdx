@@ -16,7 +16,7 @@ new Elysia().use(evlog({ drain: myDrain }))
 **Elogs**
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 new Elysia().use(createElogs({ preset: 'prod' }))
 ```
@@ -50,7 +50,7 @@ store.logger.info(request, 'handled manually')
 **Elogs**
 
 ```ts
-import { mergeAIMetrics } from '@pori15/elogs/ai'
+import { mergeAIMetrics } from '@eastgold15/elogs/ai'
 
 mergeAIMetrics(store.logger, request, {
   model: 'claude-sonnet',
@@ -89,8 +89,8 @@ evlog 时代用 `ErrorMapping` 字典把 Postgres driver code 翻译成 HTTP 状
 
 ```ts
 import { Elysia, problem } from 'elysia'
-import { createElogs, errorMap } from '@pori15/elogs'
-import { translateDrizzleError } from '@pori15/elogs/translator'
+import { createElogs, errorMap } from '@eastgold15/elogs'
+import { translateDrizzleError } from '@eastgold15/elogs/translator'
 
 // 方式 1:autoTranslate —— 翻译后只决定日志级别
 const app = new Elysia()

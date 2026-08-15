@@ -73,7 +73,7 @@ export const extractStatus = (error: unknown): number | undefined => {
  *
  * @example
  * ```ts
- * import { errorMap } from "@pori15/elogs";
+ * import { errorMap } from "@eastgold15/elogs";
  * import { problem } from "elysia";
  *
  * const errors = errorMap({

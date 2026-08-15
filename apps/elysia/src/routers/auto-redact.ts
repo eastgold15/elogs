@@ -1,4 +1,4 @@
-import { CreateElogs, globalLogger } from "@pori15/elogs";
+import { CreateElogs, globalLogger } from "@eastgold15/elogs";
 
 const BASE64URL_PAD_STRIP = /[=]+$/;
 

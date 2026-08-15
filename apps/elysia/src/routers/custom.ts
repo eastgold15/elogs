@@ -1,4 +1,4 @@
-import { CreateElogs, globalLogger } from "@pori15/elogs";
+import { CreateElogs, globalLogger } from "@eastgold15/elogs";
 
 export const customRouter = <App extends CreateElogs>(app: App) =>
   app.get("/custom", {}, () => {

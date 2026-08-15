@@ -8,8 +8,8 @@
  *
  * @example
  * ```ts
- * import { createElogs } from "@pori15/elogs";
- * import { sample, filter, tap, batch, tee } from "@pori15/elogs";
+ * import { createElogs } from "@eastgold15/elogs";
+ * import { sample, filter, tap, batch, tee } from "@eastgold15/elogs";
  *
  * const consoleTarget = { log: (lvl, msg, meta) => console.log(lvl, msg) };
  * const metricsTarget = { log: (lvl, msg, meta) => metrics.increment(...) };

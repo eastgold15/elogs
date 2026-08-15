@@ -1,5 +1,5 @@
 {
-  "name": "@pori15/elogs",
+  "name": "@eastgold15/elogs",
   "version": "2.0.0",
   "description": "🦊 Elogs is a logger for Elysia 2.0",
   "keywords": [
@@ -9,7 +9,7 @@
   ],
   "homepage": "https://elogs.vercel.app",
   "bugs": {
-    "url": "https://github.com/pori15/elogs/issues"
+    "url": "https://github.com/eastgold15/elogs/issues"
   },
   "repository": {
     "type": "git",

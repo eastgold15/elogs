@@ -22,7 +22,7 @@
 
 ## 与 Elysia 主版本对齐(强约定)
 
-**`@pori15/elogs` 的 major 版本号必须与 `elysia` 的 major 版本号保持一致。**
+**`@eastgold15/elogs` 的 major 版本号必须与 `elysia` 的 major 版本号保持一致。**
 
 这是为了让用户一眼就能从 `elogs` 版本号判断它依赖的 `elysia` 主版本。
 

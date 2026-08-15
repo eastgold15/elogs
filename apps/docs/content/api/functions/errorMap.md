@@ -1,8 +1,8 @@
-[**@pori15/elogs**](../README.md)
+[**@eastgold15/elogs**](../README.md)
 
 ***
 
-[@pori15/elogs](../README.md) / errorMap
+[@eastgold15/elogs](../README.md) / errorMap
 
 # Function: errorMap()
 
@@ -30,7 +30,7 @@ Defined in: [packages/elogs/src/errors.ts:94](https://github.com/eastgold15/elog
 ## Example
 
 ```ts
-import { errorMap } from "@pori15/elogs";
+import { errorMap } from "@eastgold15/elogs";
 import { problem } from "elysia";
 
 const errors = errorMap({

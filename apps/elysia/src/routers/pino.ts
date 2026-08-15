@@ -1,4 +1,4 @@
-import { type CreateElogs, pino } from "@pori15/elogs";
+import { type CreateElogs, pino } from "@eastgold15/elogs";
 
 export const pinoRouter = <App extends CreateElogs>(app: App) =>
   app.get("/pino", {}, () => {

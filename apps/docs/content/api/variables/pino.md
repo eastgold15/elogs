@@ -1,8 +1,8 @@
-[**@pori15/elogs**](../README.md)
+[**@eastgold15/elogs**](../README.md)
 
 ***
 
-[@pori15/elogs](../README.md) / pino
+[@eastgold15/elogs](../README.md) / pino
 
 # Variable: pino
 
@@ -22,6 +22,6 @@ Defined in: [packages/elogs/src/global-logger.ts:148](https://github.com/eastgol
 ## Example
 
 ```ts
-import { pino } from "@pori15/elogs";
+import { pino } from "@eastgold15/elogs";
 pino.info("module loaded");
 ```

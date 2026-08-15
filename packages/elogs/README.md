@@ -7,7 +7,7 @@
 ## `📩` Installation
 
 ```bash
-bun add @pori15/elogs elysia@next
+bun add @eastgold15/elogs elysia@next
 ```
 
 `elysia@next` 对应 [Elysia 2](https://elysiajs.com/integrate/elysia-2.html)。如果你还在 Elysia 1.4,用 1.x 的 `createElogs`(`latest` 标签)。
@@ -16,7 +16,7 @@ bun add @pori15/elogs elysia@next
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(createElogs())
@@ -56,7 +56,7 @@ WebSocket 生命周期走独立的 `createWsHandlerWrapper`(Elysia 2 的 `#priva
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs, createWsHandlerWrapper } from '@pori15/elogs'
+import { createElogs, createWsHandlerWrapper } from '@eastgold15/elogs'
 
 const wrapWs = createWsHandlerWrapper()
 

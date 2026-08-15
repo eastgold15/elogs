@@ -1,5 +1,5 @@
-import { type CreateElogs, globalLogger } from "@pori15/elogs";
-import { injectTraceContext } from "@pori15/elogs/otel";
+import { type CreateElogs, globalLogger } from "@eastgold15/elogs";
+import { injectTraceContext } from "@eastgold15/elogs/otel";
 
 export const otelRouter = <App extends CreateElogs>(app: App) =>
   app

@@ -10,8 +10,8 @@ Elogs 的过滤分三层:**级别白名单**(`logFilter`)、**输出 sink 开关
 `ElogsConfig.logFilter` 只接受 `level` 字段 —— 一个 `LogLevel` 数组,白名单语义。
 
 ```ts
-import { createElogs } from '@pori15/elogs'
-import type { LogLevel } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
+import type { LogLevel } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -69,7 +69,7 @@ createElogs({
 ### 只走 transport
 
 ```ts
-import type { Transport } from '@pori15/elogs'
+import type { Transport } from '@eastgold15/elogs'
 
 const httpSink: Transport = {
   log: async (level, message, meta) => {
@@ -95,8 +95,8 @@ createElogs({
 `logFilter` 只过滤 **级别**。如果想按 HTTP method / path / status 过滤,你需要把 `filter` 组合器套在 transport 上 —— 这是在 transport 层做自定义谓词的标准方式。
 
 ```ts
-import { createElogs, filter } from '@pori15/elogs'
-import type { Transport } from '@pori15/elogs'
+import { createElogs, filter } from '@eastgold15/elogs'
+import type { Transport } from '@eastgold15/elogs'
 
 const consoleT: Transport = {
   log: (level, message, meta) => {

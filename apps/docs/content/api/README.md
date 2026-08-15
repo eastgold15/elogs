@@ -1,8 +1,8 @@
-**@pori15/elogs**
+**@eastgold15/elogs**
 
 ***
 
-# @pori15/elogs
+# @eastgold15/elogs
 
 ## Interfaces
 

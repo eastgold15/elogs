@@ -1,7 +1,7 @@
 {
   "$schema": "https://googleapis.github.io/release-please/schemas/config.json",
   "release-type": "node",
-  "package": "@pori15/elogs",
+  "package": "@eastgold15/elogs",
   "version": "2.0.0",
   "changelog-path": "CHANGELOG.md",
   "changelog-sections": [

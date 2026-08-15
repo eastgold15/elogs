@@ -1,4 +1,4 @@
-import { createElogs, globalLogger } from "@pori15/elogs";
+import { createElogs, globalLogger } from "@eastgold15/elogs";
 import Elysia, { t } from "elysia";
 import { aiMetricsRouter } from "./ai-metrics";
 import { boomRouter } from "./boom";

@@ -60,7 +60,7 @@
       "name": "elysia-example",
       "version": "0.0.0",
       "dependencies": {
-        "@pori15/elogs": "workspace:*",
+        "@eastgold15/elogs": "workspace:*",
         "elysia": ">=2.0.0-exp.62",
       },
       "devDependencies": {
@@ -74,7 +74,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@bogeychan/elysia-logger": "^0.1.10",
-        "@pori15/elogs": "workspace:*",
+        "@eastgold15/elogs": "workspace:*",
         "consola": "^3.4.2",
         "elysia": ">=2.0.0-exp.62",
         "evlog": "^2.24.0",
@@ -88,7 +88,7 @@
       },
     },
     "packages/elogs": {
-      "name": "@pori15/elogs",
+      "name": "@eastgold15/elogs",
       "version": "2.0.0",
       "dependencies": {
         "chalk": "^6.0.0",
@@ -264,6 +264,8 @@
     "@dabh/diagnostics": ["@dabh/diagnostics@2.0.8", "", { "dependencies": { "@so-ric/colorspace": "^1.1.6", "enabled": "2.0.x", "kuler": "^2.0.0" } }, "sha512-R4MSXTVnuMzGD7bzHdW2ZhhdPC/igELENcq5IjEverBvq5hn1SXCWcsi6eSsdWP0/Ur+SItRRjAktmdoX/8R/Q=="],
 
     "@date-fns/tz": ["@date-fns/tz@1.5.0", "", {}, "sha512-lwYN/vDPeNRULcepoE/LO2Pgx+7/RV+S9ARfbc9lr2DtGkOD7pAiruHvbR1RX3Qyf6ja47EWJDMsNK5vK08DJg=="],
+
+    "@eastgold15/elogs": ["@eastgold15/elogs@workspace:packages/elogs"],
 
     "@emmetio/abbreviation": ["@emmetio/abbreviation@2.3.3", "", { "dependencies": { "@emmetio/scanner": "^1.0.4" } }, "sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA=="],
 
@@ -510,8 +512,6 @@
     "@pierre/theming": ["@pierre/theming@1.0.1", "", { "peerDependencies": { "@pierre/theme": "^1.1.0 || ^2.0.0", "@shikijs/themes": "^3.0.0 || ^4.0.0", "react": "^18.3.1 || ^19.0.0", "react-dom": "^18.3.1 || ^19.0.0", "shiki": "^3.0.0 || ^4.0.0" }, "optionalPeers": ["@pierre/theme", "@shikijs/themes", "react", "react-dom", "shiki"] }, "sha512-WCI5Qd7iprDpISL9fBYOLe8RV53+b7mFNA3bPzl60/2CKCSrsKN8zEcep6Y3BAzvARlmca50zGjDodqPGiTUKA=="],
 
     "@pinojs/redact": ["@pinojs/redact@0.4.0", "", {}, "sha512-k2ENnmBugE/rzQfEcdWHcCY+/FM3VLzH9cYEsbdsoqrvzAKRhUZeRNhAZvB8OitQJ1TBed3yqWtdjzS6wJKBwg=="],
-
-    "@pori15/elogs": ["@pori15/elogs@workspace:packages/elogs"],
 
     "@radix-ui/number": ["@radix-ui/number@1.1.3", "", {}, "sha512-Road2bidD0uu/1BGDOWNdPI06g0lIRy6IF9GZcIrDK2KGItfor8IQwQa+yM2ERgHM1MmHxaxpTzk0/Jp42lNfA=="],
 

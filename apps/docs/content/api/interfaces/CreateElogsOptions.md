@@ -1,8 +1,8 @@
-[**@pori15/elogs**](../README.md)
+[**@eastgold15/elogs**](../README.md)
 
 ***
 
-[@pori15/elogs](../README.md) / CreateElogsOptions
+[@eastgold15/elogs](../README.md) / CreateElogsOptions
 
 # Interface: CreateElogsOptions
 

@@ -5,7 +5,7 @@
 
 ## Packages
 
-- [`@pori15/elogs`](./packages/elogs/README.md) — Elysia 2.0 logger plugin
+- [`@eastgold15/elogs`](./packages/elogs/README.md) — Elysia 2.0 logger plugin
 - [`apps/docs`](./apps/docs) — Documentation site (Astro)
 - [`apps/elysia`](./apps/elysia) — Elysia example app
 - [`packages/bench`](./packages/bench) — Benchmarks

@@ -6,7 +6,7 @@ description: 在 Elysia 应用中使用 Elogs
 ## 安装
 
 ```bash
-bun add @pori15/elogs elysia@next
+bun add @eastgold15/elogs elysia@next
 ```
 
 `next` 标签对应 [Elysia 2 open beta](/docs/elysia-2)。如果你还在 Elysia 1.4，请见 [Elysia 2 支持](/docs/elysia-2)。
@@ -15,7 +15,7 @@ bun add @pori15/elogs elysia@next
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(createElogs())
@@ -204,7 +204,7 @@ bun add @opentelemetry/api
 ```
 
 ```ts
-import { injectTraceContext } from '@pori15/elogs/otel'
+import { injectTraceContext } from '@eastgold15/elogs/otel'
 
 app.request(({ request, store }) => {
   injectTraceContext(store.logger, request)
@@ -218,7 +218,7 @@ app.request(({ request, store }) => {
 ## AI SDK 指标
 
 ```ts
-import { mergeAIMetrics } from '@pori15/elogs/ai'
+import { mergeAIMetrics } from '@eastgold15/elogs/ai'
 
 app.post('/chat', async ({ request, store }) => {
   // 在 AI SDK 调用之后：
@@ -250,7 +250,7 @@ createElogs({
 })
 ```
 
-也可以手动在 `try/catch` 里调 `translateDrizzleError(error)`（来自 `@pori15/elogs/translator`）。详见 [Database errors](/docs/features/database-errors)。
+也可以手动在 `try/catch` 里调 `translateDrizzleError(error)`（来自 `@eastgold15/elogs/translator`）。详见 [Database errors](/docs/features/database-errors)。
 
 ## AsyncLocalStorage
 
@@ -260,7 +260,7 @@ createElogs({
 createElogs({ config: { useAsyncLocalStorage: true } })
 
 // 在任意位置：
-import { useLogger } from '@pori15/elogs'
+import { useLogger } from '@eastgold15/elogs'
 
 const log = useLogger()
 log.mergeContext({ stage: 'db' })
@@ -287,8 +287,8 @@ createElogs({
 跟 Elysia 2 推荐写法一致，把每个子路由写成 `<App extends CreateElogs>(app: App) => app` 的高阶函数，TypeScript 就能精确推断 `store.logger` / `log` 的类型：
 
 ```ts
-import type { CreateElogs } from '@pori15/elogs'
-import { createElogs } from '@pori15/elogs'
+import type { CreateElogs } from '@eastgold15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 import { Elysia } from 'elysia'
 
 const chatRouter = <App extends CreateElogs>(app: App) =>
@@ -311,7 +311,7 @@ const app = new Elysia()
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia().use(
   createElogs({
@@ -332,7 +332,7 @@ const app = new Elysia().use(
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia().use(
   createElogs({

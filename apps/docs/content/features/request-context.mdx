@@ -11,7 +11,7 @@ Elogs 在请求过程中累积 context,合并到最终的 access log 里 —— 
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(createElogs())
@@ -77,7 +77,7 @@ const ctx = store.logger.getContext(request)
 不想每个调用都手动传 `request`,可以开 `useAsyncLocalStorage: true`,让 Elysia handler context 上自动派生一个 `log`,而且深调用栈里 `useLogger()` 也能拿到同一份 logger。
 
 ```ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 createElogs({
   config: {
@@ -105,7 +105,7 @@ app.get('/user/:id', ({ log, params }) => {
 在嵌套服务层或 helper 里,导入 `useLogger()` 拿当前请求的 logger:
 
 ```ts
-import { useLogger } from '@pori15/elogs'
+import { useLogger } from '@eastgold15/elogs'
 
 async function findUser(id: string) {
   const log = useLogger()

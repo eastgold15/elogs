@@ -13,7 +13,7 @@
  * - 错误继续以原 error 形态传播(用户 .error 看到的是原引用)
  */
 
-import { type CreateElogs, globalLogger, pino } from "@pori15/elogs";
+import { type CreateElogs, globalLogger, pino } from "@eastgold15/elogs";
 import { problem } from "elysia";
 
 /** Mock Drizzle error class — mirrors drizzle-orm's `DrizzleError` shape (name

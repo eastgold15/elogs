@@ -28,13 +28,13 @@ Yes, Elogs is built for production environments. It's powered by Pino, which is 
 ### How do I install Elogs?
 
 ```bash
-bun add @pori15/elogs
+bun add @eastgold15/elogs
 ```
 
 Or with npm:
 
 ```bash
-npm install @pori15/elogs
+npm install @eastgold15/elogs
 ```
 
 ### What are the requirements?
@@ -148,7 +148,7 @@ app.get('/orders/:id', ({ store, params }) => {
 
 ```ts
 // logger.ts
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 export const elogsIns = createElogs({
   config: {

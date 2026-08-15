@@ -1,4 +1,4 @@
-import type { CreateElogs } from "@pori15/elogs";
+import type { CreateElogs } from "@eastgold15/elogs";
 
 export const statusRouter = <App extends CreateElogs>(app: App) =>
   app.get(

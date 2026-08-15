@@ -17,12 +17,12 @@ Elogs 自带 Drizzle ORM 错误翻译器。driver 抛出来的 `DrizzleError` / 
 
 ## 方式 1:手动翻译
 
-`@pori15/elogs/translator` 子路径导出了 `translateDrizzleError` 和 `isDrizzleError`。`isDrizzleError` 是类型守卫,避免误把普通 `Error` 当作 Drizzle 错误处理。
+`@eastgold15/elogs/translator` 子路径导出了 `translateDrizzleError` 和 `isDrizzleError`。`isDrizzleError` 是类型守卫,避免误把普通 `Error` 当作 Drizzle 错误处理。
 
 ```ts
 import { Elysia } from 'elysia'
-import { createElogs } from '@pori15/elogs'
-import { translateDrizzleError } from '@pori15/elogs/translator'
+import { createElogs } from '@eastgold15/elogs'
+import { translateDrizzleError } from '@eastgold15/elogs/translator'
 
 const app = new Elysia()
   .use(createElogs())
@@ -44,7 +44,7 @@ const app = new Elysia()
 
 ```ts
 import { Elysia, problem } from 'elysia'
-import { createElogs } from '@pori15/elogs'
+import { createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(
@@ -75,7 +75,7 @@ const app = new Elysia()
 
 ```ts
 import { Elysia, problem } from 'elysia'
-import { httpError, createElogs } from '@pori15/elogs'
+import { httpError, createElogs } from '@eastgold15/elogs'
 
 const app = new Elysia()
   .use(
@@ -182,12 +182,12 @@ custom 命中,内置不参与。
 
 ### `httpError` vs `translateDrizzleError`
 
-两者都在 `@pori15/elogs` 主包和 `translator` 子路径下分别暴露,但用途不同:
+两者都在 `@eastgold15/elogs` 主包和 `translator` 子路径下分别暴露,但用途不同:
 
 | API | 路径 | 用途 |
 | --- | --- | --- |
-| `httpError(status, message)` | `@pori15/elogs` | 手动构造一个 HTTPError(响应 + 日志同时生效) |
-| `translateDrizzleError(error)` | `@pori15/elogs/translator` | 翻译一个已知的 Drizzle 错误(只决定日志级别) |
+| `httpError(status, message)` | `@eastgold15/elogs` | 手动构造一个 HTTPError(响应 + 日志同时生效) |
+| `translateDrizzleError(error)` | `@eastgold15/elogs/translator` | 翻译一个已知的 Drizzle 错误(只决定日志级别) |
 
 `httpError` 是**主动**抛错,`translateDrizzleError` 是**被动**翻译(路由里 `try/catch` 兜住 driver 错误后再翻译)。
 
