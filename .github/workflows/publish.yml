@@ -1,0 +1,43 @@
+name: publish
+
+# 一次性 workflow:把当前 packages/elogs@2.0.0 直接发到 npm。
+# 用 OIDC 信任发布(无需 NPM_TOKEN secret),前提是在 npmjs.com
+# 把 @pori15/elogs 的 Trusted Publishers 加上:
+#   - Source: GitHub Actions
+#   - Repository owner: eastgold15
+#   - Repository name: elogs
+#   - Workflow filename: publish.yml
+# 后续 release 由 .github/workflows/release-please.yml 自动接替,
+# 本 workflow 留着作为手动触发 / 紧急重发的入口。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read    # checkout
+  id-token: write   # OIDC provenance (npm Trusted Publishing)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # 用 Node 24 LTS,OIDC 信任发布要求 Node 18+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: 安装 monorepo 根依赖(bun workspaces)
+        run: bun install --frozen-lockfile
+
+      - name: 编译 elogs 包
+        working-directory: packages/elogs
+        run: bun run build
+
+      - name: 发布 elogs 到 npm(带 provenance)
+        working-directory: packages/elogs
+        # OIDC 信任发布:`--provenance` 让 npm 收到 GitHub 出示的 OIDC token,
+        # 验证 "这次发布来自 eastgold15/elogs 的 publish.yml",
+        # 不需要任何 NPM_TOKEN secret。
+        run: npm publish --provenance --access public
