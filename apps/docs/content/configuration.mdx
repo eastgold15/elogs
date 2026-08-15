@@ -1,0 +1,477 @@
+---
+title: Configuration
+description: Elogs 完整配置参考
+---
+
+完整 Elogs 配置选项参考。所有字段都放在 `createElogs({...})` 的 `config` 键下,根级有一个 `logLevel` 简写。
+
+```ts
+createElogs({
+  preset: 'prod',  // 可选: 'dev' | 'prod' | 'json'
+  config: {
+    // ... 配置项(覆盖 preset)
+  },
+})
+```
+
+各环境默认见 [Presets](/docs/features/presets)。
+
+## Preset
+
+### `preset`
+
+一行设好环境默认。显式 `config` 字段永远覆盖 preset。
+
+- **类型:** `'dev' | 'prod' | 'json'`
+- **默认:** `undefined`(无 preset)
+
+```ts
+createElogs({ preset: 'prod' })
+```
+
+## 启动
+
+### `showStartupMessage`
+
+服务器启动时是否显示启动消息。
+
+- **类型:** `boolean`
+- **默认:** `true`
+
+### `startupMessageFormat`
+
+启动消息的格式。
+
+- **类型:** `'simple' | 'banner'`
+- **默认:** `'banner'`
+
+启动消息从 `.start()` 钩子发出,优先读 `instance.server`(Elysia 2),回退到 `PORT` / `HOST` 环境变量。
+
+## 显示
+
+### `useColors`
+
+控制台日志是否启用彩色输出。
+
+- **类型:** `boolean`
+- **默认:** `true`(`!process.stdout.isTTY` 时自动关闭)
+
+### `ip`
+
+日志中是否包含客户端 IP。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+**IP 解析顺序:**
+
+1. `x-forwarded-for` — 逗号分隔的列表中取第一个(最左)IP
+2. `x-real-ip` — 上面没有时回退
+
+这些头通常由反向代理(nginx、Caddy、Cloudflare)和负载均衡器设置。本地无代理测试时 `{ip}` 占位符通常为空。
+
+### `autoRedact`
+
+自动脱敏日志消息、context 对象、错误、请求头中的敏感信息。脱敏分两层:
+
+1. **按 key/header 名字** — 内置大小写不敏感的 denylist(`authorization`、`cookie`、`x-api-key`、`password`、`secret`、`token`、`session` 等),完全替换匹配到的对象 key 或请求头。`-`、`_`、camelCase 变体(`x-api-key`、`x_api_key`、`xApiKey`)都匹配。
+2. **按值模式** — 邮箱、IP 地址、Luhn 校验通过的信用卡号、JWT,只要在字符串里出现就替换。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+### `redactKeys`
+
+`autoRedact` 开启时,补充到内置 denylist 的额外 key/header 名。
+
+- **类型:** `string[]`
+- **默认:** `undefined`
+
+```ts
+autoRedact: true,
+redactKeys: ['x-internal-token', 'customerSsn']
+```
+
+### `logErrorPayload`
+
+把 validation 错误的 payload(`found` / `errors`)写进日志。默认关闭 —— 失败的 schema validation 会把整个请求 body(密码、token、卡号)塞到错误消息里,关掉能保证这些值不进入日志和 transport。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+### `logQueryParams`
+
+是否把 query 参数包含进日志的 URL 路径。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+## 格式
+
+### `customLogFormat`
+
+用占位符自定义日志消息格式。
+
+- **类型:** `string`
+- **默认:** `undefined`(内置默认包含 `{now}`、`{service}`、`{icon}`、`{method}`、`{pathname}`、`{status}`、`{duration}`、`{message}`、`{speed}`)
+
+```ts
+customLogFormat: '{now} {level} {duration}ms {method} {pathname} {status}'
+```
+
+可用的占位符:
+
+| 占位符 | 描述 |
+| --- | --- |
+| `{now}` | 当前时间戳 |
+| `{epoch}` | Unix 时间戳(秒) |
+| `{level}` | 日志级别 |
+| `{duration}` | 请求耗时(已格式化,例如 `12ms`、`1.5s`) |
+| `{method}` | HTTP 方法 |
+| `{pathname}` | 请求路径(别名 `{path}`) |
+| `{query}` | 原始 query 字符串 |
+| `{status}` | 响应状态码 |
+| `{statusText}` | HTTP 状态文本(例如 404 对应 `Not Found`) |
+| `{message}` | 自定义消息 |
+| `{icon}` | Elogs 狐狸 `🦊`(颜色 + TTY 时为级别色块) |
+| `{speed}` | 慢请求徽章(耗时 ≥ `verySlowThreshold`) |
+| `{service}` | `config.service` 服务名 |
+| `{ip}` | 客户端 IP(从 `x-forwarded-for` 或 `x-real-ip`) |
+| `{context}` | context 的 JSON(树关掉或空时显示在主行) |
+| `{requestId}` | `X-Request-Id` 值(未开启时为空) |
+
+### `service`
+
+`{service}` 占位符显示的服务名。
+
+- **类型:** `string`
+- **默认:** `undefined`
+
+### `slowThreshold`
+
+启动色(绿色)的耗时阈值(ms)。在 `slowThreshold` 与 `verySlowThreshold` 之间为黄色。
+
+- **类型:** `number`
+- **默认:** `500`
+
+### `verySlowThreshold`
+
+耗时达到这个值(ms)及以上时显示为红色,且 `{speed}` 占位符会加 `⚡ slow`。
+
+- **类型:** `number`
+- **默认:** `1000`
+
+### `showContextTree`
+
+为 `true` 时,logger helper 传入的结构化 `context` 会作为主日志下方的**树形行**打印,而不是塞进 `{message}` 同一行。
+
+- **类型:** `boolean`
+- **默认:** `true`
+
+### `contextDepth`
+
+context 树里嵌套对象的展开层数。
+
+- **类型:** `number`
+- **默认:** `1`
+
+### `timestamp`
+
+时间戳格式。接受字符串或 `{ format }` 形式。
+
+- **类型:** `string | { format: string }`
+- **默认:** `undefined`
+
+```ts
+timestamp: 'yyyy-mm-dd HH:MM:ss.SSS'
+// 或
+timestamp: { format: 'yyyy-mm-dd HH:MM:ss' }
+```
+
+## 过滤
+
+### `logFilter`
+
+日志级别过滤。接受单个级别或数组。
+
+- **类型:** `{ level?: LogLevel | LogLevel[] }`
+- **默认:** `{ level: ['DEBUG', 'INFO', 'WARNING', 'ERROR'] }`(全部级别)
+
+```ts
+logFilter: { level: ['ERROR', 'WARNING'] }
+```
+
+### `logLevel`(根级简写)
+
+等价于 `config.logFilter.level`。
+
+- **类型:** `LogLevel[]`
+- **默认:** `undefined`(全部级别)
+
+```ts
+createElogs({ logLevel: ['ERROR', 'WARNING'] })
+```
+
+## Request ID
+
+### `requestId`
+
+- **类型:** `boolean | RequestIdConfig`
+- **默认:** `false`
+
+```ts
+requestId: true
+// 或
+requestId: {
+  header: 'X-Correlation-Id',
+  generator: () => crypto.randomUUID(),
+}
+```
+
+见 [Request ID](/docs/features/request-id)。
+
+## AsyncLocalStorage
+
+### `useAsyncLocalStorage`
+
+开启 AsyncLocalStorage 透传,让 `useLogger()` 在任意调用栈深度都能拿到请求作用域 logger。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+```ts
+useAsyncLocalStorage: true
+```
+
+## 文件日志
+
+### `logFilePath`
+
+日志文件路径。设置后,文件 sink 用 `0o600`(文件)/ `0o700`(目录)默认权限写入批处理输出。
+
+- **类型:** `string`
+- **默认:** `undefined`
+
+### `logFileMode`
+
+创建日志文件时使用的文件权限位。
+
+- **类型:** `number`
+- **默认:** `0o600`
+
+### `logDirMode`
+
+创建日志目录时使用的目录权限位。
+
+- **类型:** `number`
+- **默认:** `0o700`
+
+### `logRotation`
+
+日志 rotation 配置。
+
+- **类型:** `LogRotationConfig`
+- **默认:** `undefined`
+
+```ts
+logRotation: {
+  maxSize: '10m',
+  interval: '1d',
+  maxFiles: '7d',
+  compress: true,
+}
+```
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `maxSize` | `string \| number` | 文件超过这个大小就 rotate(`'10m'`、`'5k'`、或字节数) |
+| `interval` | `string` | 按时间间隔 rotate(`'1h'`、`'12h'`、`'1d'`) |
+| `maxFiles` | `number \| string` | 保留的最大文件数(数字)或保留时长(`'7d'`、`'30d'`) |
+| `compress` | `boolean` | gzip 压缩 rotate 后的文件 |
+| `compression` | `'gzip'` | 压缩算法(默认 `gzip`) |
+
+跨文件 rotation 用 keyed mutex 串行,rotate 文件 A 不会阻塞文件 B 的写入。
+
+## 输出
+
+### `transports`
+
+自定义 transport 实现数组。
+
+- **类型:** `Transport[]`
+- **默认:** `[]`
+
+### `useTransportsOnly`
+
+只用 transports,关闭 console 和 file 日志。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+### `disableInternalLogger`
+
+关闭 console 日志。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+### `disableFileLogging`
+
+关闭 file 日志。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+## WebSocket
+
+### `disableWebSocketLogging`
+
+关闭 `app.ws(...)` 路由通过 `createWsHandlerWrapper(...)` 时的自动日志。
+
+- **类型:** `boolean`
+- **默认:** `false`
+
+## Pino
+
+### `pino`
+
+Pino logger 配置。接受所有 [Pino 选项](https://github.com/pinojs/pino/blob/master/docs/api.md#options)。
+
+- **类型:** `PinoLoggerOptions & { prettyPrint?: boolean | object }`
+- **默认:** `undefined`
+
+```ts
+pino: {
+  level: 'info',
+  prettyPrint: true,
+  redact: ['password', 'token'],
+  base: { service: 'my-api' },
+}
+```
+
+Pino 在首次访问时按需构造。把 `config.pino` 设为真值可以强制启动时立即初始化(让错误的 Pino 选项在启动时 fail-fast)。
+
+#### `pino.prettyPrint`
+
+```ts
+pino: {
+  prettyPrint: {
+    colorize: true,
+    translateTime: 'HH:MM:ss Z',
+    ignore: 'pid,hostname',
+  },
+}
+```
+
+| 选项 | 类型 | 描述 |
+| --- | --- | --- |
+| `colorize` | `boolean` | 启用颜色输出 |
+| `translateTime` | `string \| boolean` | 时间戳格式 |
+| `ignore` | `string` | 逗号分隔要排除的 key |
+| `singleLine` | `boolean` | 每条日志单行 |
+| `messageFormat` | `string` | 自定义消息格式 |
+| `levelFirst` | `boolean` | 级别在时间戳之前 |
+| `messageKey` | `string` | 包含日志消息的 key |
+| `errorKey` | `string` | 包含错误信息的 key |
+
+完整参考见 [pino-pretty 文档](https://github.com/pinojs/pino-pretty#options)。
+
+#### `pino.redact`
+
+```ts
+pino: {
+  redact: {
+    paths: ['user.password', 'req.headers.authorization'],
+    remove: true,
+  },
+}
+```
+
+#### `pino.base`
+
+```ts
+pino: {
+  base: {
+    service: 'my-api',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV,
+  },
+}
+```
+
+## Transport 节流
+
+### `transportThrottleMs`
+
+同一 transport 的错误在多少毫秒窗口内合并到一条 `console.error`。
+
+- **类型:** `number`
+- **默认:** `5000`
+
+## 错误处理
+
+### `error`
+
+错误处理配置。
+
+- **类型:** `{ verbose?: boolean }`
+- **默认:** `{ verbose: false }`
+
+```ts
+error: { verbose: true }
+```
+
+`verbose` 开启时,createElogs 会在 level 派生的日志之上,再写一条结构化 warn,带上完整错误上下文。
+
+## 完整示例
+
+```ts
+createElogs({
+  preset: 'prod',
+  config: {
+    showStartupMessage: false,
+    startupMessageFormat: 'simple',
+
+    useColors: true,
+    ip: true,
+    autoRedact: true,
+    redactKeys: ['x-internal-token'],
+    logQueryParams: false,
+    logErrorPayload: false,
+
+    customLogFormat:
+      '{now} {level} {method} {pathname} {status} {duration}ms {requestId}',
+    service: 'my-api',
+    slowThreshold: 500,
+    verySlowThreshold: 1000,
+    showContextTree: true,
+    contextDepth: 1,
+
+    logFilter: { level: ['INFO', 'WARNING', 'ERROR'] },
+
+    requestId: true,
+
+    logFilePath: './logs/production.log',
+    logFileMode: 0o600,
+    logDirMode: 0o700,
+    logRotation: {
+      maxSize: '100m',
+      interval: '1d',
+      maxFiles: '30d',
+      compress: true,
+    },
+
+    disableInternalLogger: false,
+    disableFileLogging: false,
+    useTransportsOnly: false,
+    transports: [],
+
+    pino: {
+      level: 'info',
+      prettyPrint: false,
+      redact: ['password', 'token', 'apiKey'],
+      base: { service: 'my-api', version: '1.0.0' },
+    },
+  },
+})
+```

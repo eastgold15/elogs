@@ -1,0 +1,401 @@
+---
+title: Pino
+description: 用 Pino 做高性能结构化日志
+---
+
+Elogs 集成了 [Pino](https://github.com/pinojs/pino) 作为底层日志引擎,挂载在 Elysia store 的 `pino` 字段上 —— 所有 `pino.LoggerOptions` 都通过 `config.pino` 透传,不需要单独 import。
+
+## 为什么选 Pino
+
+- **高性能** —— 业界最快的 Node.js logger 之一
+- **结构化日志** —— JSON 优先
+- **生产验证** —— 大规模生产环境使用
+- **灵活** —— 丰富的选项和 transport 支持
+
+## 基本用法
+
+### 在 Elysia route 里
+
+在 route handler 里通过 store 拿 Pino:
+
+```ts
+import { Elysia } from 'elysia'
+import { createElogs } from '@pori15/elogs'
+
+const app = new Elysia().use(createElogs())
+
+app.get('/users/:id', ({ store, params }) => {
+  const { pino } = store
+
+  pino.info({
+    userId: params.id,
+    action: 'view_profile',
+  }, 'User profile accessed')
+
+  return { user: 'data' }
+})
+```
+
+或者通过请求作用域 `log`(`useAsyncLocalStorage: true` 时,`log` 自动绑定到当前请求):
+
+```ts
+app.get('/users/:id', async ({ log, params, store }) => {
+  log.info({ userId: params.id, action: 'view_profile' }, 'profile accessed')
+  // 想用原始 Pino:store.pino.info({ ... }, '...')
+  return { user: 'data' }
+})
+```
+
+### 在 Elysia route 之外(standalone)
+
+在服务、后台任务、或任何 HTTP 请求上下文外的地方用 Pino:
+
+```ts
+// logger.ts
+import { createElogs } from '@pori15/elogs'
+
+export const elogsIns = createElogs({
+  config: {
+    logFilePath: './logs/app.log',
+    pino: {
+      level: 'info',
+      base: {
+        service: 'my-api',
+        version: '1.0.0',
+      },
+    },
+  },
+})
+
+// 导出 Pino 实例给 standalone 用
+export const logger = elogsIns.store.pino
+```
+
+```ts
+// services/order.service.ts
+import { logger } from '../logger'
+
+export class OrderService {
+  async processOrder(orderId: string) {
+    logger.info({ orderId }, 'Processing order')
+
+    try {
+      // ... 业务逻辑
+      logger.info({ orderId }, 'Order processed successfully')
+    } catch (error) {
+      logger.error({ orderId, error }, 'Order processing failed')
+      throw error
+    }
+  }
+}
+```
+
+```ts
+// index.ts
+import { Elysia } from 'elysia'
+import { elogsIns } from './logger'
+import { OrderService } from './services/order.service'
+
+const orderService = new OrderService()
+
+new Elysia()
+  .use(elogsIns)
+  .post('/orders/:id/process', async ({ params }) => {
+    await orderService.processOrder(params.id)
+    return { success: true }
+  })
+  .listen(3000)
+```
+
+**注意:** 在 route 外用 Pino 没有 HTTP context(method、pathname、IP 等)。HTTP 请求日志请在 route handler 里用 `store.logger` 或 `store.pino`。
+
+## 配置
+
+`config.pino` 字段是 [`PinoConfig`](/api/types#pinoconfig) 类型,实际定义是:
+
+```ts
+interface PinoConfig {
+  /** 显式禁用 pino(测试中常用) */
+  enabled?: boolean
+  /** Pretty 打印(pino-pretty) */
+  prettyPrint?: boolean
+  /** 其他 pino options 透传(走 [key: string]: unknown) */
+  [key: string]: unknown
+}
+```
+
+`[key: string]: unknown` 索引签名让你能透传**任何** `pino.LoggerOptions`(`level`、`redact`、`transport`、`base`、`timestamp`、`formatters`、`serializers` 等)。下面是常用配置:
+
+### 日志级别
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+createElogs({
+  config: {
+    pino: {
+      level: 'debug', // 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace' | 'silent'
+    },
+  },
+})
+```
+
+### 美化输出
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+createElogs({
+  config: {
+    pino: {
+      prettyPrint: true,
+    },
+  },
+})
+```
+
+或者自定义:
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+createElogs({
+  config: {
+    pino: {
+      prettyPrint: {
+        colorize: true,
+        translateTime: 'HH:MM:ss Z',
+        ignore: 'pid,hostname',
+      },
+    },
+  },
+})
+```
+
+`prettyPrint` 透传给 [pino-pretty](https://github.com/pinojs/pino-pretty)。要本地开发用漂亮输出,装一下 `pino-pretty`(peer dep,可选):
+
+```bash
+bun add pino-pretty
+```
+
+### 脱敏
+
+Pino 自己的 `redact` 跟 Elogs 的 `autoRedact` 独立,可以同时跑:
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+createElogs({
+  config: {
+    autoRedact: true,                 // Elogs: 改写 meta + headers
+    pino: { redact: ['password'] },   // Pino: 擦掉 JSON 输出
+  },
+})
+```
+
+用 `paths` + `remove` 删掉整个 key:
+
+```ts
+createElogs({
+  config: {
+    pino: {
+      redact: {
+        paths: ['user.password', 'req.headers.authorization'],
+        remove: true,
+      },
+    },
+  },
+})
+```
+
+### base 字段
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+createElogs({
+  config: {
+    pino: {
+      base: {
+        service: 'my-api',
+        version: '1.0.0',
+        environment: process.env.NODE_ENV,
+      },
+    },
+  },
+})
+```
+
+### Pino transport
+
+Pino 有自己的 transport 体系,处理高级日志目标。用 `transport` 选项配置:
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+createElogs({
+  config: {
+    pino: {
+      transport: {
+        target: 'pino/file',
+        options: { destination: './logs/pino-example.log' },
+      },
+    },
+  },
+})
+```
+
+**重要:** Pino transport 和 Elogs transport 是独立的:
+
+- **Pino transport**(`config.pino.transport`)—— 影响 `store.pino.info()`、`store.pino.error()` 等写出的日志
+- **Elogs transport**(`config.transports`)—— 影响 HTTP access log 管道
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+const customTransport = {
+  log(level, message, meta) {
+    // 你的实现
+  },
+}
+
+createElogs({
+  config: {
+    // Pino transport —— 只对 store.pino.* 日志生效
+    pino: {
+      transport: { target: 'pino/file', options: { destination: './logs/pino.log' } },
+    },
+    // Elogs transport —— 只对 HTTP access log 生效
+    transports: [customTransport],
+  },
+})
+
+app.get('/example', ({ store }) => {
+  store.pino.info({ feature: 'pino' }, 'pino log example')
+  // → 走 pino/file transport
+  // HTTP access log 走 Elogs transport
+})
+```
+
+## 进阶用法
+
+### 结构化日志
+
+```ts
+app.get('/users/:id', ({ store, params }) => {
+  const { pino } = store
+
+  pino.info({
+    userId: params.id,
+    action: 'view_profile',
+    timestamp: Date.now(),
+  }, 'User profile viewed')
+
+  return user
+})
+```
+
+### Child logger
+
+派生绑定 context 的 child logger:
+
+```ts
+app.get('/api/orders/:id', ({ store, params }) => {
+  const { pino } = store
+
+  const orderLogger = pino.child({
+    orderId: params.id,
+    module: 'order-service',
+  })
+
+  orderLogger.info('Fetching order details')
+  orderLogger.debug({ query: 'SELECT * FROM orders WHERE id = ?' })
+
+  return order
+})
+```
+
+### 错误日志
+
+```ts
+app.get('/api/risky', ({ store }) => {
+  const { pino } = store
+
+  try {
+    performRiskyOperation()
+  } catch (error) {
+    pino.error({ err: error, operation: 'risky_operation' }, 'Operation failed')
+    throw error
+  }
+})
+```
+
+## 按环境配置
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+const isDev = process.env.NODE_ENV === 'development'
+
+createElogs({
+  config: {
+    pino: {
+      level: isDev ? 'debug' : 'info',
+      prettyPrint: isDev,
+      redact: isDev ? [] : ['password', 'token', 'apiKey'],
+      base: {
+        service: 'my-api',
+        environment: process.env.NODE_ENV,
+      },
+    },
+  },
+})
+```
+
+`dev` preset 已经预设了 `pino: { prettyPrint: true }`,开发环境通常直接用:
+
+```ts
+import { createElogs } from '@pori15/elogs'
+
+createElogs({ preset: 'dev' })
+```
+
+## 最佳实践
+
+1. **用结构化日志** —— 传对象,不要字符串拼接
+   ```ts
+   // ✅
+   pino.info({ userId: 123, action: 'login' }, 'User logged in')
+   // ❌
+   pino.info(`User ${userId} logged in`)
+   ```
+
+2. **派生 child logger** 来绑 context
+
+3. **记性能指标** —— 关键操作
+   ```ts
+   pino.info({ duration: 150, operation: 'db_query' }, 'Query completed')
+   ```
+
+4. **脱敏** —— `autoRedact`(Elogs)和 `pino.redact`(Pino)都开
+
+5. **正确选级别:**
+   - `fatal` —— 应用即将崩溃
+   - `error` —— 需要关注的错误
+   - `warn` —— 警告,应用继续
+   - `info` —— 一般信息(默认)
+   - `debug` —— 详细调试
+   - `trace` —— 极详细调试
+   - `silent` —— 完全关掉
+
+6. **导出 Pino 给 standalone 用** —— 在服务、job、工具里
+   ```ts
+   export const logger = elogsIns.store.pino
+   ```
+
+## 扩展阅读
+
+- [Pino 文档](https://github.com/pinojs/pino)
+- [pino-pretty](https://github.com/pinojs/pino-pretty)
+- [Pino Transports](https://github.com/pinojs/pino/blob/master/transports.md)
+- [`PinoConfig` 类型](/api/types#pinoconfig)
