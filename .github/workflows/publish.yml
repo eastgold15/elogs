@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # 装 bun(bun.lock 是 monorepo 用的锁文件)
-      - uses: oven-sh/setup-bun@4d6917e68fcd1f2a0a925d67f7f518964f5e1668 # v2
+      - uses: oven-sh/setup-bun@v2 # v2
         with:
           bun-version: "1.3"
 
