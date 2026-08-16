@@ -240,3 +240,4 @@ $RECYCLE.BIN/
 .blume/src/pages/blume-search.json.ts
 .blume/src/pages/blume-assets/\[...asset].ts
 .blume/src/pages/og/\[...slug].png.ts
+apps/docs/.source/**
